@@ -1,0 +1,118 @@
+# 2021-03-04 13:17:13 аудит запросами
+
+    select 
+        alldate, ip, sum(one) as number_attacks, 
+        quote(strftime("%d %H", alldate)) as d 
+    from req 
+    group by d 
+    order by alldate;
+
+
+    select 
+        alldate, ip, sum(one) as number_attacks, 
+        quote(strftime("%d %H", alldate)) as d 
+    from req 
+    where ip = "221.131.165.86" and attack = "password" 
+    group by d order by d;
+
+    select 
+        alldate, ip, sum(one) as number_attacks, 
+        quote(strftime("%d %H", alldate)) as d 
+    from req 
+    where ip = "221.131.165.86" and attack = "auth" 
+    group by d 
+    order by d;
+
+
+# 2021-02-23 01:22:56 Приведение примера к учебному:
+
+реальные адреса:
+
+vik@deku:~/oua_202/_аудит$ sed -n '/Accepted/p' ssh.log | sed 's/^.*from//' | sed 's/ port.*$//' | sort | uniq
+
+ 188.115.141.207
+ 192.168.5.100
+ 89.22.145.79
+
+меняю на
+
+ 188.115.141.115
+ 192.168.5.120
+ 89.22.145.125
+
+sed 's/188.115.141.207/188.115.141.115/' -i ssh.log
+sed 's/192.168.5.100/192.168.5.120/' -i ssh.log
+sed 's/89.22.145.79/89.22.145.125/' -i ssh.log
+
+
+vik@deku:~/oua_202/_аудит$ sed -n '/Accepted/p' ssh.log | sed 's/^.*from//' | sed 's/ port.*$//' | sort | uniq
+ 188.115.141.115
+ 192.168.5.120
+ 89.22.145.125
+
+2021-02-23 01:28:42
+
+ключи
+
+фев 16 14:41:20 sshd[29479]: Accepted publickey for root from 89.22.145.125 port 1029 ssh2: RSA SHA256:YGjKO+t8LrMNLwhdzMyoNG6DgvsJpCH8H/lHAQiH++Y
+
+фев 16 14:39:15 sshd[27378]: Accepted publickey for root from 188.115.141.115 port 58014 ssh2: RSA SHA256:sAIw06iJFhX9xMONl0552pKZP1/1dNxDLgX7FkkFRNQ
+
+
+vik@deku:~/oua_202/_аудит$ sed 's=SHA256:sAIw06iJFhX9xMONl0552pKZP1/1dNxDLgX7FkkFRNQ=SHA256:sAIw06iJFhX9xMONl0552pKZP1/1dNxDLgX7FkkFRNq=' -i ssh.log 
+
+vik@deku:~/oua_202/_аудит$ sed 's=SHA256:YGjKO+t8LrMNLwhdzMyoNG6DgvsJpCH8H/lHAQiH++Y=SHA256:YGjKO+t8LrMNLwhdzMyoNG6DgvsJpCH8H/lHAQiH++y=' -i  ssh.log
+
+
+2021-02-23 01:33:25
+
+Взлом
+
+
+This IP address has been reported a total of 498 times from 198 distinct sources. 119.45.43.139 was first reported on December 29th 2020, and the most recent report was 11 hours ago. 
+
+
+
+фев 18 23:59:30 sshd[53191]: Accepted password for hosting from 139.155.86.214 port 1096 ssh2
+фев 18 23:59:31 sshd[53191]: pam_unix(sshd:session): session opened for user hosting by (uid=0)
+...
+фев 19 00:00:07 sshd[53191]: Connection closed by authenticating user hosting 139.155.86.214  port 1096 [preauth]
+фев 19 00:00:08 sshd[53255]: Accepted publickey for root from 139.155.86.214 port 59107 ssh2: RSA SHA256:sAIw06iJFhX9xMONl0552pKZP1/1dNxDLgX7FkkFRNK 
+...
+фев 19 02:30:01 sshd[53255]: Received disconnect from 139.155.86.214  port 59107:11: disconnected by user
+
+
+# journalctl
+2021-04-06 08:19:17
+
+дистанционная работа:
+
+    ssh xelent -t journalctl -e
+
+## полезные ключи
+2021-04-06 08:20:34
+
+    journalctl -u lighttpd.service
+    
+    journalctl -kp3
+
+2018-08-02 07:00
+
+выдавать реверсивно
+       -r, --reverse
+           Reverse output so that the newest entries are displayed first.
+
+
+добавляет сообщения юнитов
+       -x, --catalog
+
+Augment log lines with explanation texts from the message catalog. This will add explanatory help texts to log messages in the output where this is available. These short help texts will explain the context of an error or log event, possible solutions, as well as pointers to support forums, developer documentation, and any other relevant manuals. Note that help texts are not available for all messages, but only for selected ones. For more information on the message catalog, please refer to the Message Catalog Developer Documentation[4].
+
+Note: when attaching journalctl output to bug reports, please do not use -x.
+
+## Посмотреть ошибки сессии
+2018-08-02 06:57
+
+	sudo journalctl -b -p err
+
+
