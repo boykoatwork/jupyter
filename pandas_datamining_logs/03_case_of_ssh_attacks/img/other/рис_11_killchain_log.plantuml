@@ -1,0 +1,21 @@
+@startuml
+
+skinparam monochrome true
+|Common|
+start
+:Reconnaissance;
+:Weaponization;
+:Delivery;
+:Exploitation;
+:Installation;
+:Command and Control;
+|Prototype|
+:Find yourself\n(PID, ip);
+:Hide yourself\n(obfurscating\njournals);
+|Common|
+:Action on objectives;
+stop
+
+
+@enduml
+

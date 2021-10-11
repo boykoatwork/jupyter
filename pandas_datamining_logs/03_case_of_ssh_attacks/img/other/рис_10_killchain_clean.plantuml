@@ -1,0 +1,18 @@
+@startuml
+
+skinparam monochrome true
+|Common|
+start
+:Reconnaissance;
+:Weaponization;
+:Delivery;
+:Exploitation;
+:Installation;
+:Command and Control;
+:Action on objectives;
+|Prototype|
+stop
+
+
+@enduml
+

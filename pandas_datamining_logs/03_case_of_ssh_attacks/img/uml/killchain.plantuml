@@ -1,0 +1,24 @@
+@startuml
+
+skinparam monochrome true
+start
+partition "Planning attack"{ 
+:Reconnaissance;
+:Weaponization;
+:Delivery;
+}
+
+partition "Compromising target"{ 
+:Exploitation;
+:Installation;
+}
+
+partition "Executing attack"{ 
+:Command and Control;
+:Action on objectives;
+}
+stop
+
+
+@enduml
+
