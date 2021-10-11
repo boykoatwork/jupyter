@@ -1,3 +1,10 @@
+
+# Pandas dataminig
+
+## by Viktor Boyko
+
+![](https://pandas.pydata.org/docs/_static/pandas.svg)
+
 This tutorial covers working with the [pandas framework](https://pandas.pydata.org) to analyze data and build defense systems against attacks.
 
 The documentation for the framework can be found on following url:
