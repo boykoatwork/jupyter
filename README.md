@@ -1,7 +1,7 @@
 
 # Pandas dataminig
 
-## by Viktor Boyko
+## by Viktor Boiko
 
 ![](https://pandas.pydata.org/docs/_static/pandas.svg)
 
