@@ -1,8 +1,6 @@
 
 # Pandas dataminig
 
-2022-09-06
-
 ## by Viktor Boiko
 
 ![](https://pandas.pydata.org/docs/_static/pandas.svg)
